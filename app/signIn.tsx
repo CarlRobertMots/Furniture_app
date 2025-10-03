@@ -17,36 +17,29 @@ export default function SignUp() {
   const colors = Colors.light; // Colors.dark for dark mode
   const styles = createStyles(colors);
 
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [termsAccepted, setTermsAccepted] = useState(false);
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
 
   const handleSignIn = () => {
-    if (!termsAccepted) {
-      Alert.alert("Error", "You must accept the Terms and Service.");
-      return;
-    }
-    Alert.alert("Success", "Account created!");
-    router.replace({ pathname: "/(tabs)/home" });
-  };
-
-  const handleGoogleSignUp = () => {
-    Alert.alert("Google Sign Up", "Google login clicked");
+    console.log("Sign in pressed");
+    router.push("/(tabs)/home");
+    const handleGoogleSignUp = () => {
+      Alert.alert("Google Sign Up", "Google login clicked");
+    };
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        {/* Name */}
-        <Text style={styles.signUpheaderText}>Name</Text>
+        {/* Email */}
+        <Text style={styles.signUpheaderText}>Email</Text>
         <TextInput
           style={styles.input}
-          placeholder="Full Name"
+          placeholder="example@gmail.com"
           placeholderTextColor={colors.placeholder}
-          value={name}
-          onChangeText={setName}
+          value={email}
+          onChangeText={setEmail}
         />
 
         {/* Password with eye icon */}
@@ -79,7 +72,10 @@ export default function SignUp() {
         </View>
 
         {/* Sign in button */}
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+        <TouchableOpacity
+          style={[styles.button, { marginTop: 20 }]}
+          onPress={handleSignIn}
+        >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
       </View>
@@ -93,10 +89,7 @@ export default function SignUp() {
 
       {/* Google button */}
       <View style={{ alignItems: "center", marginBottom: 20 }}>
-        <TouchableOpacity
-          style={styles.googleButton}
-          onPress={handleGoogleSignUp}
-        >
+        <TouchableOpacity style={styles.googleButton}>
           <Image
             source={require("@/assets/images/GoogleIcon.png")}
             style={{ width: 24, height: 24 }}

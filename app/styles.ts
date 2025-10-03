@@ -101,7 +101,7 @@ export default (colors: ThemeColors) =>
 
     bottomText: {
       fontSize: 14,
-      color: colors.text,
+      color: colors.secondary,
       textAlign: "center",
     },
     // Splashscreen aka index
@@ -148,5 +148,31 @@ export default (colors: ThemeColors) =>
       fontWeight: "bold",
       textAlign: "center",
       marginBottom: 30,
+    },
+    // Home page
+
+    homeContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    searchContainer: {
+      marginTop: 20,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 10,
+      height: 60,
+    },
+    buttonContainer: {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    filterButton: {
+      backgroundColor: colors.secondary,
+      paddingVertical: 15,
+      borderRadius: 10,
+      marginTop: 15,
+      marginBottom: 15,
+      alignItems: "center",
     },
   });
