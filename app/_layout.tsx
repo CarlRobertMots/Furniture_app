@@ -6,6 +6,7 @@ import {
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
+import CustomHeader from "@/components/CustomHeader";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
@@ -19,10 +20,20 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="signUp" options={{ title: "Create Account" }} />
-        <Stack.Screen name="signIn" options={{ title: "Log In" }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="signUp"
+          options={{
+            header: () => <CustomHeader title="Create Account" />,
+          }}
+        />
+        <Stack.Screen
+          name="signIn"
+          options={{
+            header: () => <CustomHeader title="Log in" />,
+          }}
+        />
       </Stack>
       <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
     </ThemeProvider>
