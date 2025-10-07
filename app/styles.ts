@@ -162,17 +162,47 @@ export default (colors: ThemeColors) =>
       justifyContent: "space-between",
       paddingHorizontal: 10,
       height: 60,
+      marginLeft: 12,
     },
     buttonContainer: {
       flexDirection: "column",
       alignItems: "center",
+      marginRight: 20,
     },
+
     filterButton: {
-      backgroundColor: colors.secondary,
-      paddingVertical: 15,
+      backgroundColor: colors.background,
+      padding: 12,
       borderRadius: 10,
-      marginTop: 15,
-      marginBottom: 15,
+      marginBottom: 4,
       alignItems: "center",
+      justifyContent: "center",
+    },
+
+    filterButtonText: {
+      color: colors.primary,
+      marginTop: 4,
+      fontWeight: "500",
+      textAlign: "center",
+    },
+
+    productContainer: {
+      flex: 1,
+      flexDirection: "row",
+      flexWrap: "wrap",
+      marginLeft: 16,
+      alignItems: "center",
+      marginRight: 16,
+    },
+    product: {
+      width: "48%",
+      backgroundColor: colors.background,
+      padding: 12,
+      borderRadius: 10,
+      marginBottom: 16,
+      alignItems: "center",
+    },
+    productImage: {
+      borderRadius: 12,
     },
   });
