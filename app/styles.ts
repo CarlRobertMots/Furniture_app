@@ -187,13 +187,12 @@ export default (colors: ThemeColors) =>
     },
 
     productContainer: {
-      flex: 1,
       flexDirection: "row",
       flexWrap: "wrap",
-      marginLeft: 16,
-      alignItems: "center",
-      marginRight: 16,
+      justifyContent: "space-between",
+      paddingHorizontal: 16,
     },
+
     product: {
       width: "48%",
       backgroundColor: colors.background,
@@ -202,6 +201,7 @@ export default (colors: ThemeColors) =>
       marginBottom: 16,
       alignItems: "center",
     },
+
     productImage: {
       borderRadius: 12,
     },

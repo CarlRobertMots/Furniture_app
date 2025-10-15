@@ -70,9 +70,7 @@ export default function HomeScreen() {
                 width: 24,
                 height: 24,
                 tintColor:
-                  activeCategory === "chair"
-                    ? colors.primary
-                    : colors.background,
+                  activeCategory === "popular" ? "#fff" : colors.primary,
               }}
               resizeMode="contain"
             />

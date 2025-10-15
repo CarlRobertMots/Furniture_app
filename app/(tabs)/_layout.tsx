@@ -14,9 +14,10 @@ export default function TabLayout() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarStyle: { backgroundColor: Colors.light.background },
         tabBarShowLabel: false,
-        tabBarActiveTintColor: Colors.light.primary,
-        tabBarInactiveTintColor: Colors.light.placeholder,
+        tabBarActiveTintColor: Colors.light.background,
+        tabBarInactiveTintColor: Colors.light.primary,
       }}
     >
       <Tab.Screen
