@@ -1,5 +1,8 @@
 import { ThemeColors } from "@/constants/theme";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+const IMAGE_CONTAINER_HEIGHT = height * 0.55;
 
 export default (colors: ThemeColors) =>
   StyleSheet.create({
@@ -112,13 +115,6 @@ export default (colors: ThemeColors) =>
       alignItems: "center",
       backgroundColor: colors.background,
     },
-    image: {
-      width: "90%",
-      height: 250,
-      marginBottom: 20,
-      resizeMode: "contain",
-    },
-
     button: {
       backgroundColor: colors.primary,
       paddingVertical: 15,
@@ -169,9 +165,15 @@ export default (colors: ThemeColors) =>
       alignItems: "center",
       marginRight: 20,
     },
-
+    filterIconImage: {
+      width: 24,
+      height: 24,
+      resizeMode: "contain",
+    },
     filterButton: {
       backgroundColor: colors.background,
+      width: 50,
+      height: 50,
       padding: 12,
       borderRadius: 10,
       marginBottom: 4,
@@ -190,19 +192,158 @@ export default (colors: ThemeColors) =>
       flexDirection: "row",
       flexWrap: "wrap",
       justifyContent: "space-between",
-      paddingHorizontal: 16,
+      marginTop: 10,
     },
 
     product: {
       width: "48%",
       backgroundColor: colors.background,
-      padding: 12,
       borderRadius: 10,
-      marginBottom: 16,
       alignItems: "center",
+      overflow: "hidden",
+      marginBottom: 20,
+    },
+    productInfo: {
+      alignContent: "flex-start",
+      width: "100%",
+      paddingHorizontal: 16,
+    },
+    productNameText: {
+      fontSize: 16,
+      color: colors.primary,
     },
 
-    productImage: {
+    productPriceText: {
+      fontWeight: "bold",
+      fontSize: 14,
+      color: colors.secondary,
+    },
+    productImageThumbnail: {
+      height: 180,
+      marginBottom: 20,
+      resizeMode: "cover",
       borderRadius: 12,
+    },
+    // Product Detailed view
+    productDetailContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    productDetail: {
+      width: "100%",
+      height: IMAGE_CONTAINER_HEIGHT,
+      position: "relative",
+    },
+    imageScrollView: {
+      width: width,
+      height: IMAGE_CONTAINER_HEIGHT,
+    },
+    carouselImage: {
+      width: width,
+      height: IMAGE_CONTAINER_HEIGHT,
+      resizeMode: "cover",
+    },
+    // Back Button
+    backButton: {
+      position: "absolute",
+      top: 50,
+      left: 20,
+      zIndex: 10,
+      backgroundColor: "rgba(255, 255, 255, 0.7)",
+      borderRadius: 50,
+      padding: 10,
+    },
+
+    // Pagination
+    paginationContainer: {
+      position: "absolute",
+      bottom: 20,
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "center",
+      zIndex: 5,
+    },
+    dot: {
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+      marginHorizontal: 4,
+    },
+    activeDot: {
+      backgroundColor: "#000",
+      width: 25,
+    },
+    inactiveDot: {
+      backgroundColor: "rgba(255, 255, 255, 0.5)",
+    },
+
+    contentScrollView: {
+      flex: 1,
+    },
+    contentContainer: {
+      backgroundColor: "#fff",
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30,
+      padding: 24,
+      paddingBottom: 40,
+      flex: 1,
+    },
+    productName: {
+      fontSize: 28,
+      fontWeight: "600",
+      marginBottom: 10,
+      color: colors.text,
+    },
+    priceContainer: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      marginBottom: 20,
+    },
+    currencySymbol: {
+      fontSize: 32,
+      fontWeight: "bold",
+      color: colors.secondary,
+      marginRight: 2,
+    },
+    productPrice: {
+      fontSize: 40,
+      fontWeight: "bold",
+      color: colors.secondary,
+      lineHeight: 40,
+    },
+    productDescription: {
+      fontSize: 16,
+      color: "#666",
+      lineHeight: 24,
+    },
+
+    // Action Buttons Footer
+    actionButtonFooter: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 24,
+      paddingVertical: 16,
+      backgroundColor: "#fff",
+      borderTopWidth: 1,
+      borderColor: "#eee",
+    },
+    bookmarkButton: {
+      backgroundColor: "#eee",
+      borderRadius: 10,
+      padding: 12,
+      marginRight: 16,
+    },
+    contactButton: {
+      flex: 1, // Takes up remaining horizontal space
+      backgroundColor: "#607d8b",
+      borderRadius: 10,
+      paddingVertical: 16,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    contactButtonText: {
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: "600",
     },
   });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,8 +11,13 @@ import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import createStyles from "./styles";
 import { Colors } from "@/constants/theme";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { makeRedirectUri } from "expo-auth-session";
 
-export default function SignUp() {
+WebBrowser.maybeCompleteAuthSession();
+
+export default function SignIn() {
   const router = useRouter();
   const colors = Colors.light; // Colors.dark for dark mode
   const styles = createStyles(colors);
@@ -21,12 +26,30 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
 
+  // Google Sign-In
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: "YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com",
+    iosClientId: "YOUR_IOS_CLIENT_ID.apps.googleusercontent.com",
+    webClientId:
+      "Y808420482499-6dnqcoda1qdmu1640j6ibhjud25moaeb.apps.googleusercontent.com",
+    redirectUri: makeRedirectUri({
+      scheme: "furnitureapp", // match your app.json "scheme"
+    }),
+  });
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      const { authentication } = response;
+      console.log("Google Access Token:", authentication?.accessToken);
+      // Optionally, fetch user info from Google API here
+      Alert.alert("Success", "Signed in with Google!");
+      router.push("/(tabs)/home");
+    }
+  }, [response]);
+
   const handleSignIn = () => {
-    console.log("Sign in pressed");
+    console.log("Email sign in pressed");
     router.push("/(tabs)/home");
-    const handleGoogleSignUp = () => {
-      Alert.alert("Google Sign Up", "Google login clicked");
-    };
   };
 
   return (
@@ -65,7 +88,7 @@ export default function SignUp() {
             <Image
               source={require("@/assets/images/eye.png")}
               style={{ width: 24, height: 24 }}
-              tintColor="colors.primary"
+              tintColor={colors.primary}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -89,7 +112,11 @@ export default function SignUp() {
 
       {/* Google button */}
       <View style={{ alignItems: "center", marginBottom: 20 }}>
-        <TouchableOpacity style={styles.googleButton}>
+        <TouchableOpacity
+          style={styles.googleButton}
+          disabled={!request}
+          onPress={() => promptAsync()}
+        >
           <Image
             source={require("@/assets/images/GoogleIcon.png")}
             style={{ width: 24, height: 24 }}
@@ -103,9 +130,9 @@ export default function SignUp() {
         Don't have an account?{" "}
         <Text
           style={{ fontWeight: "bold" }}
-          onPress={() => router.push("/signIn")}
+          onPress={() => router.push("/signUp")}
         >
-          Sign in
+          Sign up
         </Text>
       </Text>
     </View>
