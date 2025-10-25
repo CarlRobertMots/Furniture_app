@@ -57,6 +57,7 @@ export default function RootLayout() {
               header: () => <CustomHeader title="Log in" />,
             }}
           />
+          <Stack.Screen name="[id]" options={{ headerShown: false }} />
         </Stack>
       </View>
     </ThemeProvider>

@@ -12,7 +12,7 @@ export default function ProfileScreen() {
   return (
     <View style={styles.homeContainer}>
       <View style={styles.searchContainer}>
-        <Text>Find All You Need</Text>
+        <Text>Profile</Text>
       </View>
     </View>
   );
