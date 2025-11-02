@@ -58,7 +58,8 @@ export default function ProductDetail() {
       onScroll={handleScroll}
       scrollEventThrottle={16}
       style={styles.imageScrollView}
-      contentContainerStyle={styles.imageScrollView}
+      scrollEnabled={true}
+      nestedScrollEnabled={true}
     >
       {(product.images || [product.images]).map((imageSource, index) => (
         <Image
