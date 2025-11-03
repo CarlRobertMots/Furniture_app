@@ -5,6 +5,7 @@ import createStyles from "@/app/styles";
 import { View, Text, Image, Pressable, ScrollView } from "react-native";
 import { useState } from "react";
 import { products } from "@/app/products";
+import { getProducts, ProductType } from "@/api/productService";
 
 export default function HomeScreen() {
   const router = useRouter();

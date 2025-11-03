@@ -1,11 +1,18 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+export type ProductCategory =
+  | "chairs"
+  | "tables"
+  | "armchairs"
+  | "beds"
+  | "other";
+
 export interface ProductDocument extends Document {
   sellerId: mongoose.Types.ObjectId;
   name: string;
   description: string;
   price: number;
-  category: string;
+  category: ProductCategory;
   images: string[];
   isSold: boolean;
   isActive: boolean;
@@ -34,6 +41,7 @@ const ProductSchema: Schema = new Schema(
     category: {
       type: String,
       required: [true, "Category is required"],
+      enum: ["chairs", "tables", "armchairs", "beds", "other"],
     },
     images: {
       type: [String],
