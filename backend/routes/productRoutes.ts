@@ -4,17 +4,16 @@ import {
   getProductById,
   createProduct,
   deleteProduct,
+  getMyProducts,
 } from "../controllers/productController";
 import protect from "../middleware/authJWT";
 
 const router = express.Router();
 
-router.route("/").get(getProducts);
+router.route("/").get(getProducts).post(protect, createProduct);
 
-router
-  .route("/:id")
-  .get(getProductById)
-  .post(protect, createProduct)
-  .delete(protect, deleteProduct);
+router.route("/my-listings").get(protect, getMyProducts);
+
+router.route("/:id").get(getProductById).delete(protect, deleteProduct);
 
 export default router;

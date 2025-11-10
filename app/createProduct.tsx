@@ -1,29 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   View,
   Text,
-  ScrollView,
   TextInput,
+  ScrollView,
   Pressable,
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { createProduct, CreateProductInput } from "@/api";
 import { Colors, ThemeColors } from "@/constants/theme";
 import createStyles from "@/app/styles";
-import { createProduct, ProductType } from "@/api/productService";
-import { Picker } from "@react-native-picker/picker";
 
-// --- MOCK for dependencies ---
 const colors: ThemeColors = Colors.light;
 const styles = createStyles(colors);
-// Assume categories are loaded from a central place or hardcoded
-const CATEGORIES = ["Chairs", "Tables", "Sofas", "Lamps", "Storage", "Other"];
-// --- END MOCK ---
 
-// Define the shape of the data needed to create a product (excluding server-side fields like _id)
-interface NewProductData {
+interface FormData {
   name: string;
   description: string;
   price: string;
@@ -33,30 +27,38 @@ interface NewProductData {
 
 export default function CreateProductScreen() {
   const router = useRouter();
-  const [formData, setFormData] = useState<NewProductData>({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
     price: "",
-    category: CATEGORIES[0],
-    // Mocking a placeholder image URL for initial submission
-    images: ["https://placehold.co/600x400?text=Placeholder+Image"],
+    category: "chairs",
+    images: [""],
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (name: keyof NewProductData, value: string) => {
+  const categories = useMemo(
+    () => ["chairs", "tables", "armchairs", "beds", "other"],
+    []
+  );
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+
+  const handleChange = (name: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateForm = () => {
-    if (!formData.name.trim()) return "Product name is required.";
-    if (!formData.description.trim()) return "Description is required.";
+  const validateForm = (): string | null => {
+    if (
+      !formData.name.trim() ||
+      !formData.description.trim() ||
+      !formData.category
+    ) {
+      return "Please fill all required fields.";
+    }
     const parsedPrice = parseFloat(formData.price);
-    if (isNaN(parsedPrice) || parsedPrice <= 0)
-      return "Valid price is required.";
-    if (!formData.category) return "Category must be selected.";
-    // In a real app, you would validate the images array length here
-
+    if (isNaN(parsedPrice) || parsedPrice <= 0) {
+      return "Price must be a valid positive number.";
+    }
     return null;
   };
 
@@ -70,20 +72,29 @@ export default function CreateProductScreen() {
     setIsLoading(true);
 
     try {
-      const productData = {
-        ...formData,
+      const productData: CreateProductInput = {
+        name: formData.name,
+        description: formData.description,
         price: parseFloat(formData.price),
-      } as unknown as ProductType;
+        category: formData.category,
+        images: [
+          formData.images[0] ||
+            "https://placehold.co/400x400/6B8E23/FFFFFF?text=New+Product",
+        ],
+      };
 
-      // Call the API service to create the product
       await createProduct(productData);
 
-      Alert.alert("Success", `${formData.name} has been listed!`, [
-        { text: "OK", onPress: () => router.replace("/home") },
+      Alert.alert("Success", `${formData.name} added successfully!`, [
+        { text: "OK", onPress: () => router.back() },
       ]);
     } catch (err: any) {
-      console.error("Product Creation Error:", err);
-      setError(err.message || "Failed to create listing. Please try again.");
+      Alert.alert(
+        "Error",
+        err.message ||
+          "Failed to submit product. Check login status and server."
+      );
+    } finally {
       setIsLoading(false);
     }
   };
@@ -93,88 +104,89 @@ export default function CreateProductScreen() {
       style={styles.container}
       contentContainerStyle={{ paddingBottom: 40 }}
     >
-      <Text style={styles.createProductHeader}>Create New Listing</Text>
+      <Text style={styles.createProductHeader}>List New Furniture</Text>
 
-      {/* Name Input */}
       <Text style={styles.createProductLabel}>Product Name</Text>
       <TextInput
         style={styles.createProductInput}
-        placeholder="Vintage Armchair, Minimalist Desk"
+        placeholder="E.g., Vintage Leather Armchair"
         value={formData.name}
         onChangeText={(text) => handleChange("name", text)}
       />
 
-      {/* Price Input */}
       <Text style={styles.createProductLabel}>Price ($)</Text>
       <TextInput
         style={styles.createProductInput}
-        placeholder="50.00"
+        placeholder="199.99"
         keyboardType="numeric"
         value={formData.price}
         onChangeText={(text) => handleChange("price", text)}
       />
 
-      {/* Category Dropdown */}
       <Text style={styles.createProductLabel}>Category</Text>
-      <View style={styles.createProductDropdown}>
-        <Picker
-          selectedValue={formData.category}
-          onValueChange={(itemValue) =>
-            handleChange("category", itemValue as string)
-          }
-          // Additional styling might be needed for the Picker component
-          style={{ color: colors.text }}
-        >
-          {CATEGORIES.map((cat) => (
-            <Picker.Item key={cat} label={cat} value={cat} />
-          ))}
-        </Picker>
-      </View>
-
-      {/* Description Input */}
-      <Text style={styles.createProductLabel}>Description</Text>
-      <TextInput
-        style={[styles.createProductInput, styles.createProductTextArea]}
-        placeholder="Describe your item: condition, dimensions, material..."
-        multiline
-        numberOfLines={4}
-        value={formData.description}
-        onChangeText={(text) => handleChange("description", text)}
-      />
-
-      {/* Image Upload Placeholder (Simple Button) */}
-      <Text style={styles.createProductLabel}>Images (Max 5)</Text>
       <Pressable
         style={styles.createProductDropdown}
-        onPress={() =>
-          Alert.alert("Upload", "Image picker functionality coming soon!")
-        }
+        onPress={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+        disabled={isLoading}
       >
         <View
           style={{
             flexDirection: "row",
+            justifyContent: "space-between",
             alignItems: "center",
-            justifyContent: "center",
           }}
         >
-          <MaterialCommunityIcons
-            name="image-plus"
-            size={24}
-            color={colors.secondary}
-          />
-          <Text style={{ color: colors.secondary, marginLeft: 10 }}>
-            Add Photos
+          <Text style={styles.dropdownText}>
+            {formData.category.charAt(0).toUpperCase() +
+              formData.category.slice(1) || "Select Category"}
           </Text>
+          <MaterialCommunityIcons
+            name={isCategoryDropdownOpen ? "menu-up" : "menu-down"}
+            size={20}
+            color={colors.text}
+          />
         </View>
       </Pressable>
 
-      {/* Error Message */}
+      {isCategoryDropdownOpen && (
+        <View style={styles.createProductCategoryList}>
+          {categories.map((cat) => (
+            <Pressable
+              key={cat}
+              style={styles.createProductCategoryItem}
+              onPress={() => {
+                handleChange("category", cat);
+                setIsCategoryDropdownOpen(false);
+              }}
+            >
+              <Text>{cat.charAt(0).toUpperCase() + cat.slice(1)}</Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
+
+      <Text style={styles.createProductLabel}>Description</Text>
+      <TextInput
+        style={[styles.createProductInput, styles.createProductTextArea]}
+        placeholder="Detailed description of the item, condition, and dimensions."
+        multiline
+        value={formData.description}
+        onChangeText={(text) => handleChange("description", text)}
+      />
+
+      <Text style={styles.createProductLabel}>Image URL (1st Image)</Text>
+      <TextInput
+        style={styles.createProductInput}
+        placeholder="https://example.com/image.jpg"
+        value={formData.images[0]}
+        onChangeText={(text) => handleChange("images", [text] as any)}
+      />
+
       {error && <Text style={styles.createProductErrorText}>{error}</Text>}
 
-      {/* Submit Button */}
       <Pressable
-        style={styles.createProductButton}
         onPress={handleSubmit}
+        style={styles.createProductButton}
         disabled={isLoading}
       >
         {isLoading ? (
@@ -186,6 +198,8 @@ export default function CreateProductScreen() {
           </>
         )}
       </Pressable>
+
+      <View style={{ height: 50 }} />
     </ScrollView>
   );
 }

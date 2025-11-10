@@ -221,6 +221,7 @@ export default (colors: ThemeColors) =>
     },
     productImageThumbnail: {
       height: 180,
+      width: "100%",
       marginBottom: 20,
       resizeMode: "cover",
       borderRadius: 12,
@@ -255,12 +256,21 @@ export default (colors: ThemeColors) =>
     // Back Button
     backButton: {
       position: "absolute",
-      top: 50,
+      top: 40,
       left: 20,
       zIndex: 10,
       backgroundColor: "rgba(255, 255, 255, 0.7)",
-      borderRadius: 50,
-      padding: 10,
+      borderRadius: 10,
+      width: 45,
+      height: 45,
+
+      alignItems: "center",
+      justifyContent: "center",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
     },
 
     // Pagination
@@ -592,5 +602,117 @@ export default (colors: ThemeColors) =>
       textAlign: "center",
       marginTop: 10,
       fontWeight: "500",
+    },
+    // NEW UTILITY STYLES
+    fullScreenCenter: {
+      // Used in Favourite.tsx and my-listings.tsx for loading/empty state
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 20,
+    },
+    dropdownText: {
+      // Used in createProduct.tsx
+      fontSize: 16,
+      color: colors.text,
+    },
+    // Settings page
+    settingsContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    settingsHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      padding: 16,
+      paddingTop: 40,
+      backgroundColor: colors.background,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    settingsbackButton: {
+      paddingRight: 10,
+    },
+    settingsTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+      flex: 1,
+      textAlign: "center",
+      paddingRight: 34,
+    },
+    infoSectionContainer: {
+      marginHorizontal: PADDING_HORIZONTAL,
+      marginTop: 20,
+      backgroundColor: "#fff",
+      borderRadius: 10,
+      padding: 15,
+      elevation: 1,
+    },
+    infoSectionHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 15,
+      paddingBottom: 5,
+    },
+    infoSectionTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    settingsInputGroup: {
+      marginBottom: 20,
+    },
+    settingsLabel: {
+      fontSize: 14,
+      color: colors.secondary,
+      marginBottom: 4,
+    },
+    settingsInputValue: {
+      fontSize: 16,
+      color: colors.text,
+      paddingVertical: 5,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    editableInputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    settingsInput: {
+      flex: 1,
+      fontSize: 16,
+      color: colors.text,
+      paddingVertical: 5,
+    },
+    saveButton: {
+      paddingLeft: 10,
+      paddingRight: 5,
+    },
+    helpLinkItem: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    helpLinkText: {
+      fontSize: 16,
+      color: colors.text,
+      flex: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.background,
+    },
+    loadingText: {
+      color: colors.text,
+      marginTop: 10,
     },
   });

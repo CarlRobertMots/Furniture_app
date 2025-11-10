@@ -1,22 +1,30 @@
 import client from "./client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
+
 interface AuthResponse {
-  user: { id: string; name: string; email: string; isAdmin: boolean };
+  user: UserProfile;
   token: string;
 }
-// User registration function
+
+// User Registration Function
 export const registerUser = async (userData: any): Promise<AuthResponse> => {
-  const response = await client.post("auth/signup", userData);
+  const response = await client.post("user/signup", userData);
   if (response.data.token) {
     await AsyncStorage.setItem("userToken", response.data.token);
   }
-
   return response.data as AuthResponse;
 };
-// User login function
+
+// User Login Function
 export const loginUser = async (userData: any): Promise<AuthResponse> => {
-  const response = await client.post("auth/login", userData);
+  const response = await client.post("user/login", userData);
 
   if (response.data.token) {
     await AsyncStorage.setItem("userToken", response.data.token);
@@ -24,28 +32,28 @@ export const loginUser = async (userData: any): Promise<AuthResponse> => {
 
   return response.data as AuthResponse;
 };
-// Product
-export interface ProductType {
-  _id: string;
-  sellerId: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  images: string[];
-  isSold: boolean;
-  isActive: boolean;
-  createdAt: string;
+
+// User profile fetch function
+export const getProfile = async (): Promise<UserProfile> => {
+  const response = await client.get("user/profile");
+  return response.data as UserProfile;
+};
+
+// User logout function
+export const logout = async (): Promise<void> => {
+  await AsyncStorage.removeItem("userToken");
+};
+// Add this interface for update payload
+interface UpdateProfilePayload {
+  name?: string;
+  // Add other fields you might want to update later, e.g., password
 }
 
-export const getProducts = async (): Promise<ProductType[]> => {
-  try {
-    const response = await client.get("/products");
-    return response.data;
-  } catch (error: any) {
-    console.error("Error fetching products:", error);
-    throw new Error(
-      error.response?.data?.message || "Failed to fetch product listings."
-    );
-  }
+// Function to update user profile
+export const updateProfile = async (
+  updateData: UpdateProfilePayload
+): Promise<UserProfile> => {
+  // Assuming your backend has an endpoint like /auth/profile for PUT/PATCH requests
+  const response = await client.put("user/profile", updateData);
+  return response.data as UserProfile;
 };

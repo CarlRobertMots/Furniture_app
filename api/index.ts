@@ -1,5 +1,4 @@
 import * as MongoService from "./productService";
-import * as LocalService from "./localProductService";
 import { ProductType, CreateProductInput } from "./productService";
 
 interface ProductServiceContract {
@@ -14,11 +13,8 @@ interface ProductServiceContract {
   removeFavourite: (productId: string) => Promise<void>;
 }
 
-export const USE_MOCK_DATA = true;
-
-const Service: ProductServiceContract = USE_MOCK_DATA
-  ? (LocalService as unknown as ProductServiceContract)
-  : (MongoService as unknown as ProductServiceContract);
+const Service: ProductServiceContract =
+  MongoService as unknown as ProductServiceContract;
 
 export const {
   getProducts,
@@ -30,4 +26,5 @@ export const {
   addFavourite,
   removeFavourite,
 } = Service;
+
 export type { ProductType, CreateProductInput };

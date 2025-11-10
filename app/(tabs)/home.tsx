@@ -1,28 +1,71 @@
-import React from "react";
-import { useRouter } from "expo-router";
+import React, { useState, useCallback } from "react";
+import { useRouter, useFocusEffect } from "expo-router";
 import { Colors, ThemeColors } from "@/constants/theme";
 import createStyles from "@/app/styles";
-import { View, Text, Image, Pressable, ScrollView } from "react-native";
-import { useState } from "react";
-import { products } from "@/app/products";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import { getProducts, ProductType } from "@/api/productService";
+
+const colors: ThemeColors = Colors.light;
+const styles = createStyles(colors);
+
+// Note: Ensure your ProductType includes a 'category: string' field from your API for filtering to work.
+interface FilterableProduct extends ProductType {
+  category: string;
+}
 
 export default function HomeScreen() {
   const router = useRouter();
-  const colors: ThemeColors = Colors.light;
-  const styles = createStyles(colors);
 
-  const [displayedProducts, setDisplayedProducts] = useState(products);
-
-  const showPopular = () => {
-    setDisplayedProducts(products.filter((p) => p.category === "popular"));
-  };
+  const [allProducts, setAllProducts] = useState<FilterableProduct[]>([]);
+  const [displayedProducts, setDisplayedProducts] = useState<
+    FilterableProduct[]
+  >([]);
   const [activeCategory, setActiveCategory] = useState<string>("popular");
+  const [loading, setLoading] = useState(true);
+
+  // --- API FETCH & HANDLERS ---
+
+  const fetchAllProducts = async () => {
+    setLoading(true);
+    try {
+      const data: FilterableProduct[] = await getProducts();
+      setAllProducts(data);
+      // Initialize with 'popular' products on load
+      applyFilter("popular", data);
+    } catch (error) {
+      console.error("Home Screen Fetch Error:", error);
+      Alert.alert("Error", "Failed to load products. Check server connection.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const applyFilter = (category: string, productsToFilter = allProducts) => {
+    setActiveCategory(category);
+    const filtered = productsToFilter.filter((p) => p.category === category);
+    setDisplayedProducts(filtered);
+  };
 
   const handlePress = (category: string) => {
-    setActiveCategory(category);
-    setDisplayedProducts(products.filter((p) => p.category === category));
+    applyFilter(category);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchAllProducts();
+      return () => {};
+    }, [])
+  );
+
+  // --- FILTER DATA ---
 
   const filterData = [
     {
@@ -57,9 +100,20 @@ export default function HomeScreen() {
     },
   ];
 
+  // --- RENDER ---
+
+  if (loading) {
+    return (
+      <View style={styles.fullScreenCenter}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
+    // Root View container (Correct for fixed header)
     <View style={styles.homeContainer}>
-      {/* Search bar*/}
+      {/* Search bar */}
       <View style={styles.searchContainer}>
         <Image
           source={require("@/assets/images/Search.png")}
@@ -70,7 +124,8 @@ export default function HomeScreen() {
           Find All You Need
         </Text>
       </View>
-      {/* Filter */}
+
+      {/* Filter ScrollView */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -83,25 +138,21 @@ export default function HomeScreen() {
       >
         {filterData.map((filter) => {
           const isActive = activeCategory === filter.category;
-
           return (
+            // NOTE: JSX is written compactly to avoid introducing whitespace text nodes.
             <View key={filter.category} style={styles.buttonContainer}>
               <Pressable
                 onPress={() => handlePress(filter.category)}
                 style={[
                   styles.filterButton,
-                  {
-                    backgroundColor: isActive ? colors.secondary : "#fff",
-                  },
+                  { backgroundColor: isActive ? colors.secondary : "#fff" },
                 ]}
               >
                 <Image
                   source={filter.image}
                   style={[
                     styles.filterIconImage,
-                    {
-                      tintColor: isActive ? "#fff" : colors.primary,
-                    },
+                    { tintColor: isActive ? "#fff" : colors.primary },
                   ]}
                 />
               </Pressable>
@@ -111,27 +162,42 @@ export default function HomeScreen() {
         })}
       </ScrollView>
 
-      {/* Products */}
-      <View style={styles.productContainer}>
-        {displayedProducts.map((product) => (
-          <Pressable
-            key={product.id}
-            onPress={() => router.push(`/${product.id}`)}
-            style={styles.product}
-          >
-            <Image
-              source={product.images[0]}
-              style={styles.productImageThumbnail}
-            />
-            <View style={styles.productInfo}>
-              <Text style={styles.productNameText}>{product.name}</Text>
-              <Text style={styles.productPriceText}>
-                ${product.price.toFixed(2)}
+      {/* Product Listings ScrollView (Allows scrolling of the grid) */}
+      <ScrollView>
+        <View style={styles.productContainer}>
+          {displayedProducts.length > 0 ? (
+            displayedProducts.map((product) => (
+              <Pressable
+                key={product._id}
+                onPress={() => router.push(`../product/${product._id}`)}
+                style={styles.product}
+              >
+                <Image
+                  // Use URI source for live images
+                  source={
+                    product.images && product.images[0]
+                      ? { uri: product.images[0] }
+                      : require("@/assets/images/Simple_Desk.png") // Use a guaranteed local fallback
+                  }
+                  style={styles.productImageThumbnail}
+                />
+                <View style={styles.productInfo}>
+                  <Text style={styles.productNameText}>{product.name}</Text>
+                  <Text style={styles.productPriceText}>
+                    ${product.price.toFixed(2)}
+                  </Text>
+                </View>
+              </Pressable>
+            ))
+          ) : (
+            <View style={{ padding: 20, width: "100%" }}>
+              <Text style={{ textAlign: "center", color: colors.secondary }}>
+                No products found in the '{activeCategory}' category.
               </Text>
             </View>
-          </Pressable>
-        ))}
-      </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 }

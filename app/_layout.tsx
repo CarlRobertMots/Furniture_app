@@ -58,6 +58,12 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen name="[id]" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="settings"
+            options={{
+              headerShown: false, // Hides the header for the settings screen
+            }}
+          />
         </Stack>
       </View>
     </ThemeProvider>

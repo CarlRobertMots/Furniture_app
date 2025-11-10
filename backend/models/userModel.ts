@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 import bcrypt from "bcryptjs";
+import { ProductDocument } from "./productModel";
 
 export interface UserDocument extends Document {
   _id: Types.ObjectId;
@@ -7,6 +8,7 @@ export interface UserDocument extends Document {
   email: string;
   password: string;
   isAdmin: boolean;
+  favorites: Types.ObjectId[];
   matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -33,6 +35,12 @@ const UserSchema: Schema = new Schema(
       required: true,
       default: false,
     },
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
   },
   {
     timestamps: true,
