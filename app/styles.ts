@@ -603,9 +603,20 @@ export default (colors: ThemeColors) =>
       marginTop: 10,
       fontWeight: "500",
     },
+    createProductImagePlaceholder: {
+      borderRadius: 10,
+      borderWidth: 1.5,
+      borderStyle: "dashed",
+      left: 20,
+
+      borderColor: colors.border,
+      backgroundColor: colors.background,
+
+      justifyContent: "center",
+      alignItems: "center",
+    },
     // NEW UTILITY STYLES
     fullScreenCenter: {
-      // Used in Favourite.tsx and my-listings.tsx for loading/empty state
       flex: 1,
       justifyContent: "center",
       alignItems: "center",

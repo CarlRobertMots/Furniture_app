@@ -6,7 +6,6 @@ import {
   updateProfile,
 } from "../controllers/authController";
 import {
-  // 💡 Import the new favorites controllers
   getFavourites,
   addFavourite,
   removeFavourite,

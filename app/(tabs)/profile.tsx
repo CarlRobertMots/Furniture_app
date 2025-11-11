@@ -96,7 +96,7 @@ export default function ProfileScreen() {
         ? `Selling ${listingCount} item${listingCount === 1 ? "" : "s"}`
         : "Check your listings",
       icon: "view-list-outline",
-      path: "/profile/my-listings",
+      path: "/product/my-listings",
     },
     {
       title: "Settings",

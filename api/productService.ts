@@ -20,6 +20,8 @@ export type CreateProductInput = Omit<
   "_id" | "createdAt" | "updatedAt" | "sellerId" | "isSold" | "isActive"
 >;
 
+// --- GET PRODUCTS ---
+
 export const getProducts = async (): Promise<ProductType[]> => {
   try {
     const response = await client.get("/products");
@@ -61,6 +63,8 @@ export const getMyProducts = async (): Promise<ProductType[]> => {
   }
 };
 
+// --- CREATE & DELETE ---
+
 export const createProduct = async (
   productData: CreateProductInput
 ): Promise<ProductType> => {
@@ -99,6 +103,8 @@ export const deleteProduct = async (id: string): Promise<void> => {
     );
   }
 };
+
+// --- FAVORITES ---
 
 export const getFavourites = async (): Promise<ProductType[]> => {
   const token = await AsyncStorage.getItem("userToken");
