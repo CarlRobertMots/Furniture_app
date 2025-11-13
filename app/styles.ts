@@ -317,7 +317,7 @@ export default (colors: ThemeColors) =>
       lineHeight: 24,
     },
 
-    // Action Buttons Footer
+    // Product detail Footer
     actionButtonFooter: {
       flexDirection: "row",
       alignItems: "center",
@@ -334,7 +334,7 @@ export default (colors: ThemeColors) =>
       marginRight: 16,
     },
     contactButton: {
-      flex: 1, // Takes up remaining horizontal space
+      flex: 1, 
       backgroundColor: "#607d8b",
       borderRadius: 10,
       paddingVertical: 16,
