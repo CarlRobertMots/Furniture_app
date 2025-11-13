@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import User from "../models/userModel";
+
+const JWT_SECRET_KEY = "aVeryLongAndComplexRandomStringThatIsHardToGuess12345"; // 🌟 Use the known value
 
 export interface AuthenticatedRequest extends Request {
   user?: any;
@@ -20,23 +21,16 @@ const protect = async (
     try {
       token = req.headers.authorization.split(" ")[1];
 
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET || "fallback_secret"
-      ) as { id: string };
+      const decoded = jwt.verify(token, JWT_SECRET_KEY) as { id: string };
 
-      req.user = await User.findById(decoded.id).select("-password");
-
-      next();
+      req.user = { id: decoded.id };
+      return next();
     } catch (error) {
-      console.error(error);
-      res.status(401).json({ message: "Not authorized, token failed" });
+      console.error("JWT verification failed:", error);
+      return res.status(401).json({ message: "Not authorized, token failed" });
     }
   }
-
-  if (!token) {
-    res.status(401).json({ message: "Not authorized, no token" });
-  }
+  return res.status(401).json({ message: "Not authorized, no token" });
 };
 
 export default protect;

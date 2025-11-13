@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 const IMAGE_CONTAINER_HEIGHT = height * 0.55;
+const PADDING_HORIZONTAL = 20;
 
 export default (colors: ThemeColors) =>
   StyleSheet.create({
@@ -220,6 +221,7 @@ export default (colors: ThemeColors) =>
     },
     productImageThumbnail: {
       height: 180,
+      width: "100%",
       marginBottom: 20,
       resizeMode: "cover",
       borderRadius: 12,
@@ -243,15 +245,32 @@ export default (colors: ThemeColors) =>
       height: IMAGE_CONTAINER_HEIGHT,
       resizeMode: "cover",
     },
+    pageHeader: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: colors.text,
+      paddingHorizontal: PADDING_HORIZONTAL,
+      paddingVertical: 15,
+      backgroundColor: colors.background,
+    },
     // Back Button
     backButton: {
       position: "absolute",
-      top: 50,
+      top: 40,
       left: 20,
       zIndex: 10,
       backgroundColor: "rgba(255, 255, 255, 0.7)",
-      borderRadius: 50,
-      padding: 10,
+      borderRadius: 10,
+      width: 45,
+      height: 45,
+
+      alignItems: "center",
+      justifyContent: "center",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
     },
 
     // Pagination
@@ -334,7 +353,7 @@ export default (colors: ThemeColors) =>
       marginRight: 16,
     },
     contactButton: {
-      flex: 1, 
+      flex: 1,
       backgroundColor: "#607d8b",
       borderRadius: 10,
       paddingVertical: 16,
@@ -345,5 +364,366 @@ export default (colors: ThemeColors) =>
       color: "#fff",
       fontSize: 18,
       fontWeight: "600",
+    },
+    // Profile
+    profileContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+      paddingTop: 50,
+    },
+    profileHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: PADDING_HORIZONTAL,
+      paddingBottom: 30,
+    },
+    profileName: {
+      fontSize: 22,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    profileEmail: {
+      fontSize: 16,
+      color: colors.secondary,
+      marginTop: 4,
+    },
+    profileLinksSection: {
+      marginHorizontal: PADDING_HORIZONTAL,
+      marginBottom: 20,
+      backgroundColor: "#fff",
+      borderRadius: 10,
+      elevation: 1,
+    },
+    profileLinkItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 15,
+      paddingHorizontal: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: "#eee",
+    },
+    profileLinkIcon: {
+      marginRight: 15,
+    },
+    profileLinkTextContainer: {
+      flex: 1,
+    },
+    profileLinkTitle: {
+      fontSize: 16,
+      fontWeight: "600",
+      color: colors.text,
+    },
+    profileLinkSubtitle: {
+      fontSize: 12,
+      color: "#666",
+      marginTop: 2,
+    },
+    profileAddListingButton: {
+      backgroundColor: colors.primary,
+      paddingVertical: 15,
+      borderRadius: 10,
+      alignItems: "center",
+      marginHorizontal: PADDING_HORIZONTAL,
+      marginTop: 20,
+    },
+    profileAddListingButtonText: {
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: "bold",
+    },
+    profileLogoutLink: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 15,
+      paddingHorizontal: PADDING_HORIZONTAL + 15,
+      marginTop: 30,
+    },
+
+    // Settings
+    settingsSection: {
+      marginHorizontal: PADDING_HORIZONTAL,
+      marginTop: 20,
+      backgroundColor: "#fff",
+      borderRadius: 10,
+      padding: 15,
+      elevation: 1,
+    },
+    settingsSectionHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+      paddingBottom: 10,
+    },
+    settingsSectionTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    settingsInfoBlock: {
+      marginBottom: 10,
+      paddingVertical: 8,
+    },
+    settingsInfoLabel: {
+      fontSize: 12,
+      color: colors.secondary,
+      fontWeight: "500",
+    },
+    settingsInfoValue: {
+      fontSize: 16,
+      color: colors.text,
+      marginTop: 2,
+    },
+    settingsLinkItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: "#eee",
+    },
+    settingsLinkText: {
+      flex: 1,
+      marginLeft: 15,
+      fontSize: 16,
+      color: colors.text,
+    },
+
+    // Listings
+    listingItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: "#fff",
+      borderRadius: 10,
+      marginHorizontal: PADDING_HORIZONTAL,
+      padding: 10,
+      marginBottom: 12,
+      elevation: 1,
+    },
+    listingThumbnail: {
+      width: 80,
+      height: 80,
+      borderRadius: 8,
+      marginRight: 15,
+      resizeMode: "cover",
+    },
+    listingInfo: {
+      flex: 1,
+      justifyContent: "center",
+    },
+    listingTitle: {
+      fontSize: 16,
+      fontWeight: "600",
+      color: colors.text,
+    },
+    listingPrice: {
+      fontSize: 14,
+      fontWeight: "bold",
+      color: colors.primary,
+      marginTop: 4,
+    },
+    listingDeleteButton: {
+      padding: 8,
+    },
+
+    // Create product
+    createProductHeader: {
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 30,
+      color: colors.text,
+      textAlign: "center",
+      paddingHorizontal: PADDING_HORIZONTAL,
+    },
+    createProductLabel: {
+      fontSize: 16,
+      fontWeight: "600",
+      color: colors.text,
+      marginBottom: 5,
+      marginTop: 15,
+      paddingHorizontal: PADDING_HORIZONTAL,
+    },
+    createProductInput: {
+      backgroundColor: "#fff",
+      padding: 12,
+      borderRadius: 8,
+      fontSize: 16,
+      borderWidth: 1,
+      borderColor: "#ddd",
+      color: colors.text,
+      marginHorizontal: PADDING_HORIZONTAL,
+    },
+    createProductTextArea: {
+      height: 100,
+      textAlignVertical: "top",
+    },
+    createProductDropdown: {
+      backgroundColor: "#fff",
+      padding: 12,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: "#ddd",
+      marginBottom: 10,
+      marginHorizontal: PADDING_HORIZONTAL,
+    },
+    createProductCategoryList: {
+      backgroundColor: "#fff",
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: "#ddd",
+      marginTop: 5,
+      marginHorizontal: PADDING_HORIZONTAL,
+    },
+    createProductCategoryItem: {
+      padding: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: "#eee",
+    },
+    createProductButton: {
+      backgroundColor: colors.primary,
+      padding: 15,
+      borderRadius: 10,
+      alignItems: "center",
+      marginTop: 30,
+      flexDirection: "row",
+      justifyContent: "center",
+      marginHorizontal: PADDING_HORIZONTAL,
+    },
+    createProductButtonText: {
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: "bold",
+      marginLeft: 10,
+    },
+    createProductErrorText: {
+      color: colors.primary,
+      textAlign: "center",
+      marginTop: 10,
+      fontWeight: "500",
+    },
+    createProductImagePlaceholder: {
+      borderRadius: 10,
+      borderWidth: 1.5,
+      borderStyle: "dashed",
+      left: 20,
+
+      borderColor: colors.border,
+      backgroundColor: colors.background,
+
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    // NEW UTILITY STYLES
+    fullScreenCenter: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 20,
+    },
+    dropdownText: {
+      // Used in createProduct.tsx
+      fontSize: 16,
+      color: colors.text,
+    },
+    // Settings page
+    settingsContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    settingsHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      padding: 16,
+      paddingTop: 40,
+      backgroundColor: colors.background,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    settingsbackButton: {
+      paddingRight: 10,
+    },
+    settingsTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+      flex: 1,
+      textAlign: "center",
+      paddingRight: 34,
+    },
+    infoSectionContainer: {
+      marginHorizontal: PADDING_HORIZONTAL,
+      marginTop: 20,
+      backgroundColor: "#fff",
+      borderRadius: 10,
+      padding: 15,
+      elevation: 1,
+    },
+    infoSectionHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 15,
+      paddingBottom: 5,
+    },
+    infoSectionTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    settingsInputGroup: {
+      marginBottom: 20,
+    },
+    settingsLabel: {
+      fontSize: 14,
+      color: colors.secondary,
+      marginBottom: 4,
+    },
+    settingsInputValue: {
+      fontSize: 16,
+      color: colors.text,
+      paddingVertical: 5,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    editableInputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    settingsInput: {
+      flex: 1,
+      fontSize: 16,
+      color: colors.text,
+      paddingVertical: 5,
+    },
+    saveButton: {
+      paddingLeft: 10,
+      paddingRight: 5,
+    },
+    helpLinkItem: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    helpLinkText: {
+      fontSize: 16,
+      color: colors.text,
+      flex: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.background,
+    },
+    loadingText: {
+      color: colors.text,
+      marginTop: 10,
     },
   });

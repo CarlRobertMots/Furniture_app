@@ -58,6 +58,23 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen name="[id]" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="settings"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="product/my-listings"
+            options={{
+              title: "My Listings",
+              headerStyle: {
+                backgroundColor: "white",
+              },
+              headerTintColor: "black",
+              headerShadowVisible: false,
+            }}
+          />
         </Stack>
       </View>
     </ThemeProvider>

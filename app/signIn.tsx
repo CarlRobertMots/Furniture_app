@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { loginUser } from "@/api/authService";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import createStyles from "./styles";
 import { Colors } from "@/constants/theme";
@@ -25,6 +27,9 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // Google Sign-In
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -47,9 +52,38 @@ export default function SignIn() {
     }
   }, [response]);
 
-  const handleSignIn = () => {
-    console.log("Email sign in pressed");
-    router.push("/(tabs)/home");
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const userData = { email, password };
+      const response = await loginUser(userData);
+
+      // Success: Token stored in AsyncStorage within loginUser
+      Alert.alert("Success", `Welcome back, ${response.user.name}!`);
+      router.push("/(tabs)/home");
+    } catch (err: any) {
+      console.error("Login Error:", err);
+
+      let errorMessage =
+        "Network Error: Cannot connect to server. Check your IP/server status.";
+
+      // Use the error message sent by the backend controller (e.g., "Invalid email or password")
+      if (err.response && err.response.data && err.response.data.message) {
+        errorMessage = err.response.data.message; // e.g., "Invalid email or password"
+      } else if (err.message.includes("Network Error")) {
+        errorMessage = "Network Error: Cannot connect to server.";
+      }
+
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -93,7 +127,19 @@ export default function SignIn() {
             />
           </TouchableOpacity>
         </View>
-
+        {/* Error Display */}
+        {error ? (
+          <Text
+            style={{
+              color: colors.primary,
+              textAlign: "center",
+              marginVertical: 10,
+              width: "80%",
+            }}
+          >
+            {error}
+          </Text>
+        ) : null}
         {/* Sign in button */}
         <TouchableOpacity
           style={[styles.button, { marginTop: 20 }]}
