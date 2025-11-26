@@ -43,6 +43,8 @@ export default function TabLayout() {
         name="Favourites"
         component={FavouritesScreen}
         options={{
+          // @ts-ignore
+          tabBarTestID: "nav-tab-Favourites", // TypeScript will now ignore this error
           tabBarIcon: ({ focused }) => (
             <Image
               source={require("@/assets/images/Favourite.png")}

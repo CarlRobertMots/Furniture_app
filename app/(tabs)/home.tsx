@@ -139,10 +139,14 @@ export default function HomeScreen() {
         {filterData.map((filter) => {
           const isActive = activeCategory === filter.category;
           return (
-            // NOTE: JSX is written compactly to avoid introducing whitespace text nodes.
-            <View key={filter.category} style={styles.buttonContainer}>
-              <Pressable
-                onPress={() => handlePress(filter.category)}
+            // 💡 The parent is now the Pressable
+            <Pressable
+              key={filter.category}
+              style={styles.buttonContainer}
+              onPress={() => handlePress(filter.category)} // 👈 onPress is here
+              testID={`category-${filter.name}`} // 👈 testID is here
+            >
+              <View
                 style={[
                   styles.filterButton,
                   { backgroundColor: isActive ? colors.secondary : "#fff" },
@@ -155,9 +159,9 @@ export default function HomeScreen() {
                     { tintColor: isActive ? "#fff" : colors.primary },
                   ]}
                 />
-              </Pressable>
+              </View>
               <Text style={styles.filterButtonText}>{filter.name}</Text>
-            </View>
+            </Pressable>
           );
         })}
       </ScrollView>
@@ -171,6 +175,7 @@ export default function HomeScreen() {
                 key={product._id}
                 onPress={() => router.push(`../product/${product._id}`)}
                 style={styles.product}
+                testID="product-card"
               >
                 <Image
                   // Use URI source for live images

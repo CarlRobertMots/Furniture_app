@@ -166,7 +166,11 @@ const ProductDetail = () => {
         }}
       />
       {/* Back Button Overlay */}
-      <Pressable onPress={() => router.back()} style={backButton}>
+      <Pressable
+        onPress={() => router.back()}
+        style={backButton}
+        testID="back-button"
+      >
         <Text
           style={{ color: colors.primary, fontSize: 24, fontWeight: "bold" }}
         >
@@ -207,7 +211,9 @@ const ProductDetail = () => {
         </View>
         {/* Product Description and Details */}
         <View style={contentContainer}>
-          <Text style={productName}>{product.name}</Text>
+          <Text style={productName} testID="product-detail-name">
+            {product.name}
+          </Text>
           <View style={priceContainer}>
             <Text style={currencySymbol}>$</Text>
             <Text style={productPrice}>{product.price.toFixed(2)}</Text>
@@ -222,6 +228,7 @@ const ProductDetail = () => {
       <View style={actionButtonFooter}>
         <Pressable
           onPress={handleBookmark}
+          testID="product-detail-favourite-button"
           style={[
             bookmarkButton,
             {

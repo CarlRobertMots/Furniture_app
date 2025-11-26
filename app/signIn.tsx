@@ -144,6 +144,7 @@ export default function SignIn() {
         <TouchableOpacity
           style={[styles.button, { marginTop: 20 }]}
           onPress={handleSignIn}
+          testID="sign-in-button"
         >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>

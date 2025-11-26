@@ -24,7 +24,7 @@ const productRoutes = (
 
       // 💡 For LOCAL MOBILE TESTING, explicitly use the local IP address
       //    (This assumes your server runs on port 8000 and your IP is 192.168.1.230)
-      const baseUrl = `http://192.168.1.230:${process.env.PORT || 8000}`;
+      const baseUrl = ` https://subnitrated-elatedly-ashley.ngrok-free.dev`;
 
       const publicUrl = `${baseUrl}/public/uploads/${req.file.filename}`;
       res.status(200).json({
